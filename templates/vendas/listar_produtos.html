@@ -1,0 +1,64 @@
+{% extends 'vendas/base.html' %}
+
+{% block title %}Listar Produtos - Sabor Na Mesa{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>📦 Lista de Produtos</h2>
+    </div>
+    <div class="col-auto">
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary">← Voltar ao Painel</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Preço Atual</th>
+                    <th>Novo Preço</th>
+                    <th>Estoque Atual</th>
+                    <th>Novo Estoque</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produto in produtos %}
+                <tr>
+                    <td>{{ produto.nome }}</td>
+                    <td><strong>R$ {{ produto.preco|floatformat:2 }}</strong></td>
+                    <td>
+                        <form method="post" action="{% url 'alterar_preco_produto' %}" class="d-flex flex-wrap gap-2 align-items-center">
+                            {% csrf_token %}
+                            <input type="hidden" name="produto_id" value="{{ produto.id }}">
+                            <input type="number" name="novo_preco" step="0.01" min="0" value="{{ produto.preco }}" class="form-control form-control-sm" style="width: 100px;" placeholder="Preço">
+                            <input type="number" name="novo_estoque" min="0" value="{{ produto.estoque }}" class="form-control form-control-sm" style="width: 80px;" placeholder="Estoque">
+                            <button type="submit" class="btn btn-success btn-sm">Salvar</button>
+                        </form>
+                    </td>
+                    <td>{{ produto.estoque }}</td>
+                    <td>
+                        <span class="badge bg-{% if produto.estoque > 0 %}success{% else %}danger{% endif %}">
+                            {% if produto.estoque > 0 %}Disponível{% else %}Indisponível{% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        <form action="{% url 'excluir_produto' produto.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Excluir produto?')">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">Nenhum produto cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

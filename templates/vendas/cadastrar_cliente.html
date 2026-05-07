@@ -1,0 +1,51 @@
+{% extends 'vendas/base.html' %}
+
+{% block title %}Cadastrar Cliente{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h3 class="mb-0">👥 Cadastrar Novo Cliente</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nome Completo *</label>
+                        <input type="text" name="nome" class="form-control" placeholder="Nome completo do cliente" required autocomplete="off">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Telefone *</label>
+                        <input type="text" name="telefone" class="form-control" placeholder="(00) 00000-0000" required autocomplete="off">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">CPF ou CNPJ</label>
+                        <input type="text" name="cpf_cnpj" class="form-control" placeholder="CPF ou CNPJ (somente números)" autocomplete="off">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Senha</label>
+                        <input type="password" name="senha" class="form-control" placeholder="Senha para o cliente acessar" autocomplete="new-password">
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-custom text-white">
+                            💾 Salvar Cliente
+                        </button>
+                        <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

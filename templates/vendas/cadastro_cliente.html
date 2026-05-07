@@ -1,0 +1,54 @@
+{% extends 'vendas/base.html' %}
+
+{% block title %}Cadastre-se - Tempero na Mesa{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h3 class="mb-0">📝 Cadastre-se</h3>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Crie sua conta para fazer compras</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nome Completo *</label>
+                        <input type="text" name="nome" class="form-control" placeholder="Seu nome completo" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Telefone *</label>
+                        <input type="tel" name="telefone" inputmode="numeric" pattern="[0-9]*" class="form-control" placeholder="(00) 00000-0000" required autocomplete="off">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">CPF ou CNPJ</label>
+                        <input type="text" name="cpf_cnpj" class="form-control" placeholder="CPF ou CNPJ (somente números)" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Senha *</label>
+                        <input type="password" name="senha" class="form-control" placeholder="Crie uma senha" required minlength="4" autocomplete="new-password">
+                        <small class="text-muted">Use esta senha ao fazer compras</small>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-custom text-white">
+                            ✅ Criar Conta
+                        </button>
+                        <a href="{% url 'produtos' %}" class="btn btn-outline-secondary">
+                            Voltar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

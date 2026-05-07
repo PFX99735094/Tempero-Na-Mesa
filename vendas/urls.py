@@ -1,0 +1,32 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.produtos, name='produtos'),
+    path('carrinho/', views.carrinho, name='carrinho'),
+    path('login-admin/', views.login_admin, name='login_admin'),
+    path('logout-admin/', views.logout_admin, name='logout_admin'),
+    path('painel/', views.admin_dashboard, name='admin_dashboard'),
+    path('listar-produtos/', views.listar_produtos, name='listar_produtos'),
+    path('alterar-preco/', views.alterar_preco_produto, name='alterar_preco_produto'),
+    path('cadastrar-produto/', views.cadastrar_produto, name='cadastrar_produto'),
+    path('excluir-produto/<int:produto_id>/', views.excluir_produto, name='excluir_produto'),
+    path('adicionar-estoque/', views.adicionar_estoque, name='adicionar_estoque'),
+    path('cadastrar-cliente/', views.cadastrar_cliente, name='cadastrar_cliente'),
+    path('cadastre-se/', views.cadastro_cliente, name='cadastro_cliente'),
+    path('listar-clientes/', views.listar_clientes, name='listar_clientes'),
+    path('excluir-cliente/<int:cliente_id>/', views.excluir_cliente, name='excluir_cliente'),
+    path('vendas/', views.vendas, name='vendas'),
+    path('venda/<int:venda_id>/', views.detalhes_venda, name='detalhes_venda'),
+    path('entregas/', views.entregas, name='entregas'),
+    path('confirmar-entrega/<int:venda_id>/', views.confirmar_entrega, name='confirmar_entrega'),
+    path('excluir-venda/<int:venda_id>/', views.excluir_venda, name='excluir_venda'),
+    path('confirmacao/', views.confirmacao_pedido, name='confirmacao_pedido'),
+    path('selecionar-cliente/', views.selecionar_cliente, name='selecionar_cliente'),
+    path('checkout/', views.finalizar_checkout, name='finalizar_checkout'),
+    path('adicionar/<int:produto_id>/', views.adicionar_ao_carrinho, name='adicionar_ao_carrinho'),
+    path('remover/<int:item_id>/', views.remover_do_carrinho, name='remover_do_carrinho'),
+    path('atualizar/<int:item_id>/', views.atualizar_quantidade, name='atualizar_quantidade'),
+    path('finalizar/', views.finalizar_venda, name='finalizar_venda'),
+    path('venda/<int:venda_id>/pdf/', views.gerar_pdf_venda, name='gerar_pdf_venda'),
+]

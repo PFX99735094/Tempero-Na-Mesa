@@ -1,0 +1,53 @@
+{% extends 'vendas/base.html' %}
+
+{% block title %}Clientes - SaaS Vendas{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2 class="mb-4">👥 Clientes Cadastrados</h2>
+    </div>
+    <div class="col-auto">
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-secondary">← Voltar</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>CPF/CNPJ</th>
+                    <th>Data de Cadastro</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.id }}</td>
+                    <td>{{ cliente.nome }}</td>
+                    <td>{{ cliente.telefone }}</td>
+                    <td>{{ cliente.cpf_cnpj|default:"-" }}</td>
+                    <td>{{ cliente.created_at|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        <form action="{% url 'excluir_cliente' cliente.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Excluir cliente?')">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">Nenhum cliente cadastrado</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'cadastrar_cliente' %}" class="btn btn-primary">+ Novo Cliente</a>
+    </div>
+</div>
+{% endblock %}

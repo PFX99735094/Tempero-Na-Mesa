@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Tempero na Mesa</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        :root { --primary: #e74c3c; --secondary: #c0392b; }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .banner-logo {
+            background: var(--primary);
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 10px 10px 0 0;
+            margin-left: -40px;
+            margin-right: -40px;
+            margin-top: -40px;
+        }
+        .banner-logo h1 {
+            color: white;
+            font-family: Georgia, serif;
+            font-style: italic;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        .btn-custom {
+            background: var(--primary);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 25px;
+            color: white;
+            width: 100%;
+        }
+        .btn-custom:hover {
+            background: var(--secondary);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="banner-logo">
+            <h1>Tempero na Mesa</h1>
+        </div>
+        
+        <h3 class="text-center mb-4">🔐 Acesso Restrito</h3>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Senha de Acesso</label>
+                <input type="password" name="password" class="form-control" placeholder="Digite a senha" required>
+            </div>
+            <button type="submit" class="btn btn-custom">Entrar</button>
+        </form>
+        
+        <div class="text-center mt-3">
+            <a href="{% url 'produtos' %}" class="text-muted">← Voltar para Loja</a>
+        </div>
+    </div>
+</body>
+</html>
