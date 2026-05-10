@@ -1,8 +1,8 @@
 [build]
   environment = { NODE_VERSION = "20" }
-  command = "npm install && npm run build"
+  command = "rm -rf node_modules package-lock.json && npm install --force && npm run build"
   publish = "dist"
-  ignore = "git"
+  ignore_cache = true
 
 [[redirects]]
   from = "/*"
