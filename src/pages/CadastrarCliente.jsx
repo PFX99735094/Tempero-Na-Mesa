@@ -8,6 +8,7 @@ export default function CadastrarCliente() {
   const [telefone, setTelefone] = useState('')
   const [cpfCnpj, setCpfCnpj] = useState('')
   const [senha, setSenha] = useState('')
+  const [mostrarSenha, setMostrarSenha] = useState(false)
   const [loading, setLoading] = useState(false)
   const { adminAuth, showMessage } = useApp()
   const navigate = useNavigate()
@@ -89,13 +90,23 @@ export default function CadastrarCliente() {
               
               <div className="mb-3">
                 <label className="form-label fw-bold">Senha</label>
-                <input 
-                  type="password" 
-                  className="form-control" 
-                  placeholder="Senha para o cliente acessar"
-                  value={senha}
-                  onChange={(e) => setSenha(e.target.value)}
-                />
+                <div className="input-group">
+                  <input 
+                    type={mostrarSenha ? "text" : "password"} 
+                    className="form-control" 
+                    placeholder="Senha para o cliente acessar"
+                    value={senha}
+                    onChange={(e) => setSenha(e.target.value)}
+                  />
+                  <button 
+                    type="button" 
+                    className="btn btn-outline-secondary"
+                    onClick={() => setMostrarSenha(!mostrarSenha)}
+                    title={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+                  >
+                    {mostrarSenha ? "🙈" : "👁️"}
+                  </button>
+                </div>
               </div>
               
               <hr />

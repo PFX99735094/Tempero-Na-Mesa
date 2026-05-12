@@ -6,6 +6,7 @@ import { useApp } from '../context/AppContext'
 export default function Checkout() {
   const { carrinho, totalCarrinho, clienteSelecionado, limparCarrinho, setVendaConfirmada } = useApp()
   const [senha, setSenha] = useState('')
+  const [mostrarSenha, setMostrarSenha] = useState(false)
   const [endereco, setEndereco] = useState('')
   const [loading, setLoading] = useState(false)
   const [erro, setErro] = useState('')
@@ -145,14 +146,24 @@ export default function Checkout() {
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label className="form-label">Senha do Cliente *</label>
-                  <input 
-                    type="password" 
-                    className="form-control" 
-                    placeholder="Digite sua senha"
-                    value={senha}
-                    onChange={(e) => setSenha(e.target.value)}
-                    required
-                  />
+                  <div className="input-group">
+                    <input 
+                      type={mostrarSenha ? "text" : "password"} 
+                      className="form-control" 
+                      placeholder="Digite sua senha"
+                      value={senha}
+                      onChange={(e) => setSenha(e.target.value)}
+                      required
+                    />
+                    <button 
+                      type="button" 
+                      className="btn btn-outline-secondary"
+                      onClick={() => setMostrarSenha(!mostrarSenha)}
+                      title={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      {mostrarSenha ? "🙈" : "👁️"}
+                    </button>
+                  </div>
                   <small className="text-muted">Senha criada no cadastro</small>
                 </div>
                 <div className="mb-3">

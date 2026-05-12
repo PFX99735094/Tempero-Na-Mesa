@@ -8,6 +8,7 @@ export default function CadastroCliente() {
   const [telefone, setTelefone] = useState('')
   const [cpfCnpj, setCpfCnpj] = useState('')
   const [senha, setSenha] = useState('')
+  const [mostrarSenha, setMostrarSenha] = useState(false)
   const [loading, setLoading] = useState(false)
   const { showMessage } = useApp()
   const navigate = useNavigate()
@@ -98,15 +99,25 @@ export default function CadastroCliente() {
               
               <div className="mb-3">
                 <label className="form-label fw-bold">Senha *</label>
-                <input 
-                  type="password" 
-                  className="form-control" 
-                  placeholder="Crie uma senha"
-                  value={senha}
-                  onChange={(e) => setSenha(e.target.value)}
-                  required
-                  minLength="4"
-                />
+                <div className="input-group">
+                  <input 
+                    type={mostrarSenha ? "text" : "password"} 
+                    className="form-control" 
+                    placeholder="Crie uma senha"
+                    value={senha}
+                    onChange={(e) => setSenha(e.target.value)}
+                    required
+                    minLength="4"
+                  />
+                  <button 
+                    type="button" 
+                    className="btn btn-outline-secondary"
+                    onClick={() => setMostrarSenha(!mostrarSenha)}
+                    title={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+                  >
+                    {mostrarSenha ? "🙈" : "👁️"}
+                  </button>
+                </div>
                 <small className="text-muted">Use esta senha ao fazer compras</small>
               </div>
               

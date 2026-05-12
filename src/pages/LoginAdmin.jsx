@@ -4,6 +4,7 @@ import { useApp } from '../context/AppContext'
 
 export default function LoginAdmin() {
   const [password, setPassword] = useState('')
+  const [mostrarSenha, setMostrarSenha] = useState(false)
   const [error, setError] = useState('')
   const { loginAdmin, showMessage, adminAuth } = useApp()
   const navigate = useNavigate()
@@ -39,14 +40,24 @@ export default function LoginAdmin() {
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label className="form-label">Senha de Acesso</label>
-              <input 
-                type="password" 
-                className="form-control" 
-                placeholder="Digite a senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="input-group">
+                <input 
+                  type={mostrarSenha ? "text" : "password"} 
+                  className="form-control" 
+                  placeholder="Digite a senha"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <button 
+                  type="button" 
+                  className="btn btn-outline-secondary"
+                  onClick={() => setMostrarSenha(!mostrarSenha)}
+                  title={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+                >
+                  {mostrarSenha ? "🙈" : "👁️"}
+                </button>
+              </div>
             </div>
             <button type="submit" className="btn btn-custom w-100">Entrar</button>
           </form>
