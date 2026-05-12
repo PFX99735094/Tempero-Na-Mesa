@@ -20,6 +20,7 @@ import Checkout from './pages/Checkout'
 import ConfirmacaoPedido from './pages/ConfirmacaoPedido'
 import TestarConexao from './pages/TestarConexao'
 
+
 function AdminRoute({ children }) {
   const { adminAuth } = useApp()
   const navigate = useNavigate()
