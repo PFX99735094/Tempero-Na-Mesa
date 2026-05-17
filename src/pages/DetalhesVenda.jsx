@@ -38,62 +38,96 @@ export default function DetalhesVenda() {
 
   const gerarPDF = () => {
     const doc = new jsPDF()
-    
-    doc.setFontSize(18)
-    doc.text('Tempero Na Mesa', 105, 20, { align: 'center' })
-    
-    doc.setFontSize(11)
-    doc.text('O Sabor da Família', 105, 28, { align: 'center' })
-    
-    doc.setFontSize(9)
-    doc.text('CNPJ: 37.220.844/0001-58', 105, 35, { align: 'center' })
-    doc.text('Inscrição Estadual: 19.667.062-4', 105, 40, { align: 'center' })
-    doc.text('Teresina - Piauí', 105, 45, { align: 'center' })
-    doc.text(`Telefone: (86) 9 9439-6726`, 105, 50, { align: 'center' })
-    
-    doc.setFontSize(14)
-    doc.text(`Pedido #${venda?.id}`, 105, 65, { align: 'center' })
-    
-    doc.setFontSize(10)
-    doc.text(`Cliente: ${venda?.clientes?.nome}`, 20, 80)
-    doc.text(`Telefone: ${venda?.clientes?.telefone}`, 20, 88)
-    doc.text(`CPF/CNPJ: ${venda?.clientes?.cpf_cnpj || 'Não informado'}`, 20, 96)
-    doc.text(`Data: ${new Date(venda?.data_venda).toLocaleString('pt-BR')}`, 20, 104)
-    doc.text(`Status: ${venda?.entregue ? 'Entregue' : 'Pendente'}`, 20, 112)
-    
+    const pageHeight = 280
+    let y = 20
+
+    const addPageIfNeeded = (requiredSpace) => {
+      if (y + requiredSpace > pageHeight) {
+        doc.addPage()
+        y = 20
+        return true
+      }
+      return false
+    }
+
+    const drawHeader = () => {
+      doc.setFontSize(18)
+      doc.text('Tempero Na Mesa', 105, y, { align: 'center' })
+      
+      doc.setFontSize(11)
+      doc.text('O Sabor da Família', 105, y + 8, { align: 'center' })
+      
+      doc.setFontSize(9)
+      doc.text('CNPJ: 37.220.844/0001-58', 105, y + 15, { align: 'center' })
+      doc.text('Inscrição Estadual: 19.667.062-4', 105, y + 20, { align: 'center' })
+      doc.text('Teresina - Piauí', 105, y + 25, { align: 'center' })
+      doc.text(`Telefone: (86) 9 9439-6726`, 105, y + 30, { align: 'center' })
+      
+      doc.setFontSize(14)
+      doc.text(`Pedido #${venda?.id}`, 105, y + 45, { align: 'center' })
+      
+      doc.setFontSize(10)
+      doc.text(`Cliente: ${venda?.clientes?.nome}`, 20, y + 60)
+      doc.text(`Telefone: ${venda?.clientes?.telefone}`, 20, y + 68)
+      doc.text(`CPF/CNPJ: ${venda?.clientes?.cpf_cnpj || 'Não informado'}`, 20, y + 76)
+      doc.text(`Data: ${new Date(venda?.data_venda).toLocaleString('pt-BR')}`, 20, y + 84)
+      doc.text(`Status: ${venda?.entregue ? 'Entregue' : 'Pendente'}`, 20, y + 92)
+      
+      y += 110
+    }
+
+    drawHeader()
+
     doc.setFontSize(12)
-    doc.text('Itens do Pedido', 20, 130)
-    
-    let y = 140
-    doc.setFontSize(10)
-    doc.text('Produto', 20, y)
-    doc.text('Qtd', 100, y)
-    doc.text('Valor Unit.', 130, y)
-    doc.text('Total', 170, y)
-    
-    y += 8
-    itens.forEach(item => {
-      doc.text(item.produto_nome, 20, y)
-      doc.text(String(item.quantidade), 100, y)
-      doc.text(`R$ ${parseFloat(item.produto_preco).toFixed(2)}`, 130, y)
-      doc.text(`R$ ${parseFloat(item.total).toFixed(2)}`, 170, y)
-      y += 8
-    })
-    
+    doc.text('Itens do Pedido', 20, y)
     y += 10
+
+    const colWidths = [80, 25, 35, 30]
+    const colX = [20, 100, 125, 160]
+
+    doc.setFillColor(220, 220, 220)
+    doc.rect(20, y - 5, 170, 10, 'F')
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'bold')
+    doc.text('Produto', colX[0] + 40, y)
+    doc.text('Qtd', colX[1] + 5, y)
+    doc.text('Valor Unit.', colX[2] + 5, y)
+    doc.text('Total', colX[3] + 8, y)
+    y += 10
+
+    doc.setFont('helvetica', 'normal')
+    itens.forEach((item) => {
+      addPageIfNeeded(15)
+
+      doc.rect(20, y - 5, 170, 10)
+      doc.text(item.produto_nome.substring(0, 35), colX[0] + 5, y)
+      doc.text(String(item.quantidade), colX[1] + 8, y)
+      doc.text(`R$ ${parseFloat(item.produto_preco).toFixed(2)}`, colX[2] + 2, y)
+      doc.text(`R$ ${parseFloat(item.total).toFixed(2)}`, colX[3] + 5, y)
+      y += 10
+    })
+
+    addPageIfNeeded(25)
+    y += 5
+    doc.setFillColor(240, 240, 240)
+    doc.rect(20, y, 170, 12, 'F')
     doc.setFontSize(12)
-    doc.text(`TOTAL A PAGAR: R$ ${parseFloat(venda?.valor_total).toFixed(2)}`, 20, y)
-    
+    doc.setFont('helvetica', 'bold')
+    doc.text(`TOTAL A PAGAR: R$ ${parseFloat(venda?.valor_total).toFixed(2)}`, 105, y + 8, { align: 'center' })
+    y += 20
+    doc.setFont('helvetica', 'normal')
+
     if (venda?.endereco_entrega) {
-      y += 15
+      addPageIfNeeded(20)
       doc.setFontSize(11)
       doc.text('Endereço de Entrega:', 20, y)
       y += 8
       doc.text(venda.endereco_entrega, 20, y)
+      y += 15
     }
-    
-    y += 20
-    doc.text('_________________________________________', 20, y)
+
+    addPageIfNeeded(20)
+    doc.text('_________________________________________', 105, y, { align: 'center' })
     doc.text('Assinatura do Cliente', 105, y + 8, { align: 'center' })
     
     doc.save(`venda_${venda?.id}.pdf`)
